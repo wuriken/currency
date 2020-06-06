@@ -21,6 +21,8 @@ INSTALLED_APPS = [
 
     'django_extensions',
 
+    'debug_toolbar',
+
     'account',
     'rate',
 ]
@@ -33,6 +35,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'settings.urls'
@@ -63,6 +66,12 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -98,23 +107,28 @@ CELERY_BROKER_URL = 'amqp://localhost'
 CELERY_BEAT_SCHEDULE = {
     'privat': {
         'task': 'rate.tasks.parse_privatbank',
-        'schedule': crontab(minute='*/1'),
+        'schedule': crontab(minute='*/15'),
     },
     'mono': {
         'task': 'rate.tasks.parse_monobank',
-        'schedule': crontab(minute='*/1'),
+        'schedule': crontab(minute='*/15'),
     },
     'nationalbank': {
         'task': 'rate.tasks.parse_nationalbank',
-        'schedule': crontab(minute='*/1'),
+        'schedule': crontab(minute='*/15'),
     },
     'vkurse': {
         'task': 'rate.tasks.parse_vkurse',
-        'schedule': crontab(minute='*/1'),
+        'schedule': crontab(minute='*/15'),
     },
     'pumb': {
         'task': 'rate.tasks.parse_pumb',
-        'schedule': crontab(minute='*/1'),
+        'schedule': crontab(minute='*/15'),
     }
-
 }
+
+INTERNAL_IPS = [
+    # ...
+    '127.0.0.1',
+    # ...
+]

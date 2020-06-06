@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %} Rate list{% endblock title %}
+
+{% block content %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Source</th>
+            <th scope="col">Currency type</th>
+            <th scope="col">Created</th>
+            <th scope="col">Type</th>
+            <th scope="col">Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for rate in object_list %}
+
+            <tr>
+                <td>{{ rate.source }}</td>
+                <td>{{ rate.currency_type }}</td>
+                <td>{{ rate.created }}</td>
+                <td>{{ rate.type }}</td>
+                <td>{{ rate.amount }}</td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}
