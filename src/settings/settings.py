@@ -2,6 +2,9 @@ import os
 
 from celery.schedules import crontab
 
+from django.urls import reverse_lazy
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -22,6 +25,8 @@ INSTALLED_APPS = [
     'django_extensions',
 
     'debug_toolbar',
+
+    'crispy_forms',
 
     'account',
     'rate',
@@ -58,6 +63,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'settings.wsgi.application'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    './src/static',
+]
 
 DATABASES = {
     'default': {
@@ -72,6 +81,8 @@ CACHES = {
         'LOCATION': '127.0.0.1:11211',
     }
 }
+
+AUTH_USER_MODEL = 'account.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -128,7 +139,18 @@ CELERY_BEAT_SCHEDULE = {
 }
 
 INTERNAL_IPS = [
-    # ...
     '127.0.0.1',
-    # ...
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_REDIRECT_URL = reverse_lazy('index')
+LOGOUT_REDIRECT_URL = reverse_lazy('index')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'your_account@gmail.com'
+EMAIL_HOST_PASSWORD = 'your account’s password'
+DEFAULT_EMAIL_FROM = 'smtp.gmail.com'

@@ -11,6 +11,7 @@
             <th scope="col">Created</th>
             <th scope="col">Type</th>
             <th scope="col">Amount</th>
+            <th scope="col">Edit\Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -22,6 +23,14 @@
                 <td>{{ rate.created }}</td>
                 <td>{{ rate.type }}</td>
                 <td>{{ rate.amount }}</td>
+                <td>
+                     <a href="{% url 'rate:edit' rate.id %}">
+                            <i class="fas fa-pencil-alt"></i>
+                     </a>
+                    <a href="{% url 'rate:delete' rate.id %}">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </td>
             </tr>
 
         {% endfor %}

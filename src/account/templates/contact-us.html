@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Contact us
+{% endblock title %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    Contact us
+    <div class="row">
+        <div class="column">
+            <form method="POST">
+                {% csrf_token %}
+                 {{ form|crispy }}
+                <button type="submit" class="btn btn-primary">Send</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}
