@@ -6,10 +6,21 @@ from django.views.generic import UpdateView
 
 from rate.models import Rate
 
+from src.rate.model_choices import SOURCE_CHOICES, CURRENCY_TYPE_CHOICES, RATE_TYPE_CHOICES
+
 
 class RateList(ListView):
     queryset = Rate.objects.all()
     template_name = 'rate-list.html'
+
+    def get_source_display(self, source):
+        return SOURCE_CHOICES[source]
+
+    def get_currency_type_display(self, currency_type):
+        return CURRENCY_TYPE_CHOICES[currency_type]
+
+    def get_type_display(self, type):
+        return RATE_TYPE_CHOICES[type]
 
 
 class RateDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
