@@ -1,7 +1,7 @@
+from account.models import Contact
+
 from django.core import mail
 from django.urls import reverse
-
-from account.models import Contact
 
 
 def test_sanity():
@@ -56,4 +56,3 @@ def test_contact_us_correct_payload(client, settings):
     assert email.from_email == settings.DEFAULT_EMAIL_FROM
     assert email.body == payload['message']
     assert email.subject == payload['title']
-

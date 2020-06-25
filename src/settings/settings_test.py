@@ -1,6 +1,6 @@
 import os
 
-from src.settings.settings import *
+from src.settings.settings import BASE_DIR
 
 SECRET_KEY = 'esfnsjkfbrdjgbdrkjgbdrkgjd'
 DEBUG = False

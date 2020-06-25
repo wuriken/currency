@@ -147,9 +147,4 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = reverse_lazy('index')
 LOGOUT_REDIRECT_URL = reverse_lazy('index')
 
-try:
-    import src.settings.settings_local
-except ImportError:
-    print('Error import local settings\n' * 5)  # noqa
-
 DEFAULT_EMAIL_FROM = 'test@test.com'
