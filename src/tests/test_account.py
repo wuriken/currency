@@ -1,5 +1,4 @@
 from account.models import Contact
-from account.models import User
 
 from django.core import mail
 from django.urls import reverse
@@ -40,23 +39,30 @@ def test_contact_us_incorrect_payload(client):
     assert errors['email_from'] == ['Enter a valid email address.']
 
 
-def test_login_form(client):
+def test_correct_login(client, django_user_model):
     url = reverse('account:login')
+    username = "test"
+    password = "test"
+    django_user_model.objects.create_user(username=username, password=password)
     payload = {
-        'username': 'test',
-        'password': 'test',
+        "username": username,
+        "password": password
     }
     response = client.post(url, payload)
-    assert response.status_code == 200
+    assert response.status_code == 302
     assert response.request['REQUEST_METHOD'] == 'POST'
+    assert response.url == '/'
 
 
-def test_empty_login_form(client):
+def test_empty_login_form(client, django_user_model):
     url = reverse('account:login')
     payload = {
         'Username': 'test',
         'Password': 'test',
     }
+    username = "test"
+    password = "test"
+    django_user_model.objects.create_user(username=username, password=password)
     response = client.post(url, data=payload)
     assert response.status_code == 200
     errors = response.context_data['form'].errors
@@ -72,27 +78,16 @@ def test_logout_form(client):
     assert response.url == '/'
 
 
-def test_correct_login(client):
+def test_incorrect_login(client, django_user_model):
     url = reverse('account:login')
+    username = "test"
+    password = "test"
+    django_user_model.objects.create_user(username=username, password=password)
     payload = {
-        'username': 'test',
-        'password': '',
+        "username": username,
+        "password": "123"
     }
-    user = User.objects.get(username=payload['username'])
-    payload['password'] = user.password
-    response = client.post(url, data=payload)
-    assert response.status_code == 200
-    errors = response.context_data['form'].errors
-    assert len(errors) == 0
-
-
-def test_incorrect_login(client):
-    url = reverse('account:login')
-    payload = {
-        'username': 'test',
-        'password': 'test',
-    }
-    response = client.post(url, data=payload)
+    response = client.post(url, payload)
     assert response.status_code == 200
     errors = response.context_data['form'].errors
     assert len(errors) == 1

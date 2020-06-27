@@ -1,5 +1,7 @@
 from django.urls import reverse
 
+from rate.models import Rate
+
 
 def test_rate_list(client):
     url = reverse('rate:list')
@@ -30,29 +32,29 @@ def test_rate_list_latest(client):
     assert response.status_code == 200
 
 
-# def test_delete_rate(client, django_user_model):
-#     username = "test1"
-#     # password = "pbkdf2_sha256$150000$1gSxE7rM9CyF$LuFqz5g/d0X7cv0uWLSL92k5RBQuHsgHsIYZW3nMx9A="
-#     password = "test1"
-#     django_user_model.objects.create_user(username=username, password=password, is_superuser=True)
-#     client.login(username=username, password=password)
-#     pk = 23
-#     url = reverse('rate:delete', args=(pk, ))
-#     response = client.post(url)
-#     breakpoint()
-#     assert response.content == 'Protected Area'
+def test_delete_rate(client, django_user_model):
+    username = "test"
+    password = "test"
+    django_user_model.objects.create_user(username=username, password=password, is_superuser=True)
+    client.login(username=username, password=password)
+    pk = 23
+    obj = Rate.objects.create(id=23, source=1, amount=5.5, type=1, currency_type=1)
+    obj.save()
+    url = reverse('rate:delete', args=(pk, ))
+    response = client.post(url)
+    assert response.status_code == 302
+    assert response.url == '/rate/list/'
 
 
-# def test_update_rate(client):
-#     pk = 0
-#     url = reverse('rate:edit', args=(pk, ))
-#     payload = {
-#         'source': 'mailmail',
-#         'currency_type': 'hello world',
-#         'type': 'hello world\n',
-#         'amount': 'hello world\n',
-#     }
-#     response = client.post(url)#, data=payload)
-#     breakpoint()
-#     assert response.status_code == 302
-#     assert response.url == '/accounts/login/?next=/rate/edit/' + str(pk)
+def test_update_rate(client, django_user_model):
+    username = "test"
+    password = "test"
+    django_user_model.objects.create_user(username=username, password=password, is_superuser=True)
+    client.login(username=username, password=password)
+    pk = 23
+    obj = Rate.objects.create(id=23, source=1, amount=5.5, type=1, currency_type=1)
+    obj.save()
+    url = reverse('rate:edit', args=(pk,))
+    response = client.post(url)
+    assert response.status_code == 200
+    assert response.template_name == ['rate_edit.html']
