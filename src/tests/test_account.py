@@ -84,8 +84,6 @@ def test_correct_login(client):
     assert response.status_code == 200
     errors = response.context_data['form'].errors
     assert len(errors) == 0
-    assert errors['__all__'] == [
-        'Please enter a correct username and password. Note that both fields may be case-sensitive.']
 
 
 def test_incorrect_login(client):
