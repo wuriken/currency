@@ -1,4 +1,5 @@
 from account.models import Contact
+from account.models import User
 
 from django.core import mail
 from django.urls import reverse
@@ -29,7 +30,7 @@ def test_contact_us_incorrect_payload(client):
     url = reverse('account:contact-us')
     payload = {
         'email_from': 'mailmail',
-        'title': 'hellow wrold',
+        'title': 'hello world',
         'message': 'hello world\n',
     }
     response = client.post(url, payload)
@@ -39,13 +40,75 @@ def test_contact_us_incorrect_payload(client):
     assert errors['email_from'] == ['Enter a valid email address.']
 
 
+def test_login_form(client):
+    url = reverse('account:login')
+    payload = {
+        'username': 'test',
+        'password': 'test',
+    }
+    response = client.post(url, payload)
+    assert response.status_code == 200
+    assert response.request['REQUEST_METHOD'] == 'POST'
+
+
+def test_empty_login_form(client):
+    url = reverse('account:login')
+    payload = {
+        'Username': 'test',
+        'Password': 'test',
+    }
+    response = client.post(url, data=payload)
+    assert response.status_code == 200
+    errors = response.context_data['form'].errors
+    assert len(errors) == 2
+    assert errors['username'] == ['This field is required.']
+    assert errors['password'] == ['This field is required.']
+
+
+def test_logout_form(client):
+    url = reverse('account:logout')
+    response = client.get(url)
+    assert response.status_code == 302
+    assert response.url == '/'
+
+
+def test_correct_login(client):
+    url = reverse('account:login')
+    payload = {
+        'username': 'test',
+        'password': '',
+    }
+    user = User.objects.get(username=payload['username'])
+    payload['password'] = user.password
+    response = client.post(url, data=payload)
+    assert response.status_code == 200
+    errors = response.context_data['form'].errors
+    assert len(errors) == 0
+    assert errors['__all__'] == [
+        'Please enter a correct username and password. Note that both fields may be case-sensitive.']
+
+
+def test_incorrect_login(client):
+    url = reverse('account:login')
+    payload = {
+        'username': 'test',
+        'password': 'test',
+    }
+    response = client.post(url, data=payload)
+    assert response.status_code == 200
+    errors = response.context_data['form'].errors
+    assert len(errors) == 1
+    assert errors['__all__'] == [
+        'Please enter a correct username and password. Note that both fields may be case-sensitive.']
+
+
 def test_contact_us_correct_payload(client, settings):
     initial_count = Contact.objects.count()
     assert len(mail.outbox) == 0
     url = reverse('account:contact-us')
     payload = {
         'email_from': 'test@test.com',
-        'title': 'hellow wrold',
+        'title': 'hello world',
         'message': 'hello world',
     }
     response = client.post(url, payload)

@@ -2,9 +2,10 @@ import os
 
 from src.settings.settings import BASE_DIR
 
-SECRET_KEY = 'esfnsjkfbrdjgbdrkjgbdrkgjd'
-DEBUG = False
-ALLOWED_HOSTS = ['*']
+
+# SECRET_KEY = 'esfnsjkfbrdjgbdrkjgbdrkgjd'
+# DEBUG = False
+# ALLOWED_HOSTS = ['*']
 
 CELERY_ALWAYS_EAGER = CELERY_TASK_ALWAYS_EAGER = True  # run celery tasks as functions
 

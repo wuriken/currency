@@ -6,4 +6,16 @@
   {"created": "2020-06-14T09:23:08.203Z", "amount": "29.75", "source": 1, "currency_type": 2, "type": 2}},
   {"model": "rate.rate", "pk": 4,
     "fields":
-  {"created": "2020-06-14T09:23:08.207Z", "amount": "30.40", "source": 1, "currency_type": 2, "type": 1}}, {"model": "rate.rate", "pk": 5, "fields": {"created": "2020-06-14T09:23:16.161Z", "amount": "26.57", "source": 2, "currency_type": 1, "type": 2}}, {"model": "rate.rate", "pk": 6, "fields": {"created": "2020-06-14T09:23:16.167Z", "amount": "26.88", "source": 2, "currency_type": 1, "type": 1}}, {"model": "rate.rate", "pk": 7, "fields": {"created": "2020-06-14T09:23:16.174Z", "amount": "29.81", "source": 2, "currency_type": 2, "type": 2}}, {"model": "rate.rate", "pk": 8, "fields": {"created": "2020-06-14T09:23:16.180Z", "amount": "30.38", "source": 2, "currency_type": 2, "type": 1}}]
+  {"created": "2020-06-14T09:23:08.207Z", "amount": "30.40", "source": 1, "currency_type": 2, "type": 1}},
+  {"model": "rate.rate", "pk": 5,
+    "fields":
+    {"created": "2020-06-14T09:23:16.161Z", "amount": "26.57", "source": 2, "currency_type": 1, "type": 2}},
+  {"model": "rate.rate", "pk": 6,
+    "fields":
+    {"created": "2020-06-14T09:23:16.167Z", "amount": "26.88", "source": 2, "currency_type": 1, "type": 1}},
+  {"model": "rate.rate", "pk": 7,
+    "fields":
+    {"created": "2020-06-14T09:23:16.174Z", "amount": "29.81", "source": 2, "currency_type": 2, "type": 2}},
+  {"model": "rate.rate", "pk": 8,
+    "fields":
+    {"created": "2020-06-14T09:23:16.180Z", "amount": "30.38", "source": 2, "currency_type": 2, "type": 1}}]
