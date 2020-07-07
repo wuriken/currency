@@ -2,6 +2,7 @@ import datetime
 
 from django.core.management import BaseCommand
 
+from rate import model_choices as mch
 from rate.models import Rate
 
 import requests
@@ -16,17 +17,17 @@ class Command(BaseCommand):
         for item in json_str['exchangeRate']:
             if item.get('currency'):
                 if 'EUR' in item['currency']:
-                    rate_buy = Rate.objects.create(source=1, currency_type=2, type=1, amount=item['purchaseRate'])
+                    rate_buy = Rate.objects.create(source=mch.SOURCE_PRIVATBANK, currency_type=mch.CURRENCY_TYPE_EUR, type=mch.RATE_TYPE_SALE, amount=item['purchaseRate'])
                     rate_buy.created = date_time
                     rate_buy.save()
-                    rate_sale = Rate.objects.create(source=1, currency_type=2, type=2, amount=item['saleRate'])
+                    rate_sale = Rate.objects.create(source=mch.SOURCE_PRIVATBANK, currency_type=mch.CURRENCY_TYPE_EUR, type=mch.RATE_TYPE_BUY, amount=item['saleRate'])
                     rate_sale.created = date_time
                     rate_sale.save()
                 if 'USD' in item['currency']:
-                    rate_buy = Rate.objects.create(source=1, currency_type=1, type=1, amount=item['purchaseRate'])
+                    rate_buy = Rate.objects.create(source=mch.SOURCE_PRIVATBANK, currency_type=mch.CURRENCY_TYPE_USD, type=mch.RATE_TYPE_SALE, amount=item['purchaseRate'])
                     rate_buy.created = date_time
                     rate_buy.save()
-                    rate_sale = Rate.objects.create(source=1, currency_type=1, type=2, amount=item['saleRate'])
+                    rate_sale = Rate.objects.create(source=mch.SOURCE_PRIVATBANK, currency_type=mch.CURRENCY_TYPE_USD, type=mch.RATE_TYPE_BUY, amount=item['saleRate'])
                     rate_sale.created = date_time
                     rate_sale.save()
 

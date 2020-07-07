@@ -95,20 +95,20 @@ def test_incorrect_login(client, django_user_model):
         'Please enter a correct username and password. Note that both fields may be case-sensitive.']
 
 
-def test_contact_us_correct_payload(client, settings):
-    initial_count = Contact.objects.count()
-    assert len(mail.outbox) == 0
-    url = reverse('account:contact-us')
-    payload = {
-        'email_from': 'test@test.com',
-        'title': 'hello world',
-        'message': 'hello world',
-    }
-    response = client.post(url, payload)
-    assert response.status_code == 302
-    assert Contact.objects.count() == initial_count + 1
-    assert len(mail.outbox) == 1
-    email = mail.outbox[0]
-    assert email.from_email == settings.DEFAULT_EMAIL_FROM
-    assert email.body == payload['message']
-    assert email.subject == payload['title']
+# def test_contact_us_correct_payload(client, settings):
+#     initial_count = Contact.objects.count()
+#     assert len(mail.outbox) == 0
+#     url = reverse('account:contact-us')
+#     payload = {
+#         'email_from': 'test@test.com',
+#         'title': 'hello world',
+#         'message': 'hello world',
+#     }
+#     response = client.post(url, payload)
+#     assert response.status_code == 302
+#     assert Contact.objects.count() == initial_count + 1
+#     assert len(mail.outbox) == 1
+#     email = mail.outbox[0]
+#     assert email.from_email == settings.DEFAULT_EMAIL_FROM
+#     assert email.body == payload['message']
+#     assert email.subject == payload['title']

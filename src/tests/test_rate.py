@@ -53,7 +53,6 @@ def test_update_rate(client, django_user_model):
     client.login(username=username, password=password)
     pk = 23
     obj = Rate.objects.create(id=23, source=1, amount=5.5, type=1, currency_type=1)
-    obj.save()
     url = reverse('rate:edit', args=(pk,))
     response = client.post(url)
     assert response.status_code == 200
