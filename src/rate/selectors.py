@@ -14,9 +14,9 @@ def rate_cache_key(source, type_, currency) -> str:
 
 def get_latest_rates():
     object_list = []
-    for source in mch.SOURCE_CHOICES:  # source
+    for source in mch.SOURCE_CHOICES:
         source = source[0]
-        for currency in mch.CURRENCY_TYPE_CHOICES:  # currency_type
+        for currency in mch.CURRENCY_TYPE_CHOICES:
             currency = currency[0]
             for type_ in mch.RATE_TYPE_CHOICES:  # type
                 type_ = type_[0]
@@ -24,7 +24,6 @@ def get_latest_rates():
                 key = rate_cache_key(source, type_, currency)
                 cached_rate = cache.get(key)
 
-                # no rate in cache
                 if cached_rate is None:
                     rate = Rate.objects.filter(
                         source=source,
@@ -34,7 +33,7 @@ def get_latest_rates():
                     if rate is not None:
                         cache.set(key, rate, 30)
                         object_list.append(rate)
-                else:  # value in cache
+                else:
                     object_list.append(cached_rate)
 
     return object_list

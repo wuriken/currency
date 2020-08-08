@@ -1,6 +1,7 @@
-from rest_framework import serializers
 from account.models import Contact
 from account.tasks import send_email_async
+
+from rest_framework import serializers
 
 
 class ContactSerializer(serializers.ModelSerializer):
