@@ -12,7 +12,7 @@ server {
 	    alias /etc/nginx/static_content/media;
 	}
 
-	location /api {
+	location /api/v1 {
 	    auth_basic off;
 	    include /etc/nginx/conf.d/proxy_params;
 	    proxy_pass http://${WSGI_HOST}:${WSGI_PORT};
