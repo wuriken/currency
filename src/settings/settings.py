@@ -1,17 +1,17 @@
 import os
+from datetime import timedelta
 
 from celery.schedules import crontab
 
 from django.urls import reverse_lazy
 
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-SECRET_KEY = '7l%&6v6&rt(9hiy+=z$&f+ybm58o9_$pmmi=8+ljlk8ulfsij%'
+SECRET_KEY = os.environ['SECRET_KEY']
 
-DEBUG = True
-ALLOWED_HOSTS = ['*']
+DEBUG = os.environ['SERVER'] == 'dev'
+ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split(':')
 
 
 INSTALLED_APPS = [
@@ -25,7 +25,9 @@ INSTALLED_APPS = [
     'django_extensions',
 
     'debug_toolbar',
-
+    'rest_framework',
+    'drf_yasg',
+    'django_filters',
     'crispy_forms',
 
     'account',
@@ -63,10 +65,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'settings.wsgi.application'
 
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static_content', 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    './src/static',
 ]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'static_content', 'media')
 
 DATABASES = {
     'default': {
@@ -78,7 +84,7 @@ DATABASES = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '127.0.0.1:11211',
+        'LOCATION': f'{os.environ["MEMCACHED_HOST"]}:11211',
     }
 }
 
@@ -110,30 +116,15 @@ USE_L10N = True
 USE_TZ = True
 
 
-STATIC_URL = '/static/'
-
-CELERY_BROKER_URL = 'amqp://localhost'
-
+CELERY_BROKER_URL = 'amqp://{0}:{1}@{2}:5672//'.format(
+    os.environ.get('RABBITMQ_DEFAULT_USER', 'guest'),
+    os.environ.get('RABBITMQ_DEFAULT_PASS', 'guest'),
+    os.environ.get('RABBITMQ_DEFAULT_HOST', 'localhost')
+)
 
 CELERY_BEAT_SCHEDULE = {
-    'privat': {
-        'task': 'rate.tasks.parse_privatbank',
-        'schedule': crontab(minute='*/15'),
-    },
-    'mono': {
-        'task': 'rate.tasks.parse_monobank',
-        'schedule': crontab(minute='*/15'),
-    },
-    'nationalbank': {
-        'task': 'rate.tasks.parse_nationalbank',
-        'schedule': crontab(minute='*/15'),
-    },
-    'vkurse': {
-        'task': 'rate.tasks.parse_vkurse',
-        'schedule': crontab(minute='*/15'),
-    },
-    'pumb': {
-        'task': 'rate.tasks.parse_pumb',
+    'parse': {
+        'task': 'rate.tasks.parse',
         'schedule': crontab(minute='*/15'),
     }
 }
@@ -150,11 +141,46 @@ LOGOUT_REDIRECT_URL = reverse_lazy('index')
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
+
+REST_USE_JWT = True
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=14),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=14),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+
+    'AUTH_HEADER_TYPES': ('Bearer', 'JWT', 'LOL'),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+
+    'JTI_CLAIM': 'jti',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'your_account@gmail.com'
-EMAIL_HOST_PASSWORD = 'your account’s password'
-DEFAULT_EMAIL_FROM = 'smtp.gmail.com'
+EMAIL_HOST = os.environ['EMAIL_HOST']
+EMAIL_USE_TLS = os.environ['EMAIL_USE_TLS']
+EMAIL_PORT = os.environ['EMAIL_PORT']
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+DEFAULT_EMAIL_FROM = os.environ['DEFAULT_EMAIL_FROM']

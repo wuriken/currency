@@ -5,6 +5,4 @@ install:
   - pip install -r requirements.txt
 script:
   - flake8 ./src --max-line-length=120
-  - python ./src/manage.py validate_templates
   - pip check
-  - python ./src/manage.py makemigrations --check --dry-run

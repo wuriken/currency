@@ -11,10 +11,9 @@ from openpyxl import Workbook
 from openpyxl.writer.excel import save_virtual_workbook
 
 from rate import model_choices as mch
+from rate.model_choices import CURRENCY_TYPE_CHOICES, RATE_TYPE_CHOICES, SOURCE_CHOICES
 from rate.models import Rate
 from rate.utils import display
-
-from src.rate.model_choices import CURRENCY_TYPE_CHOICES, RATE_TYPE_CHOICES, SOURCE_CHOICES
 
 
 class RateList(ListView):

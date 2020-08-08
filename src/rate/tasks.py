@@ -221,3 +221,12 @@ def parse_pumb():
                     currency_type=currency_type_mapper[clean_td(td_list[0])],
                     type=mch.RATE_TYPE_SALE,
                 )
+
+
+@shared_task
+def parse():
+    parse_pumb.delay()
+    parse_vkurse.delay()
+    parse_monobank.delay()
+    parse_nationalbank.delay()
+    parse_privatbank.delay()
