@@ -1,6 +1,7 @@
 from django.urls import reverse
 
 from rate.models import Rate
+from rate.utils import display
 
 
 def test_rate_list(client):
@@ -24,6 +25,13 @@ def test_rate_xlsx(client):
     assert len(response.content) > 0
     assert response._headers['content-type'] == ('Content-Type',
                                                  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
+
+def test_display_attr(client):
+    rate = Rate.objects.create(id=23, source=1, amount=5.5, type=1, currency_type=1)
+    id_rate = rate.id
+    assert id_rate == display(rate, 'id')
+    assert rate.get_source_display() == display(rate, 'source')
 
 
 def test_rate_list_latest(client):
@@ -52,7 +60,6 @@ def test_update_rate(client, django_user_model):
     django_user_model.objects.create_user(username=username, password=password, is_superuser=True)
     client.login(username=username, password=password)
     pk = 23
-    obj = Rate.objects.create(id=23, source=1, amount=5.5, type=1, currency_type=1)
     url = reverse('rate:edit', args=(pk,))
     response = client.post(url)
     assert response.status_code == 200

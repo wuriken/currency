@@ -1,6 +1,3 @@
-from account.models import Contact
-
-from django.core import mail
 from django.urls import reverse
 
 

@@ -3,6 +3,7 @@ from account.models import User
 from account.tasks import send_mail_async
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import PasswordChangeDoneView, PasswordChangeView
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
@@ -34,3 +35,13 @@ class MyProfile(LoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         obj = self.get_queryset().get(id=self.request.user.id)
         return obj
+
+
+class PasswordChange(LoginRequiredMixin, PasswordChangeView):
+    template_name = 'change_password.html'
+    success_url = reverse_lazy('account:password_change_done')
+
+
+class PasswordChangeDone(LoginRequiredMixin, PasswordChangeDoneView):
+    template_name = 'change_password_done.html'
+    success_url = reverse_lazy('account:my-profile')
