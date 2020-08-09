@@ -12,6 +12,9 @@ def avatar_path(instance, filename):
 class User(AbstractUser):
     avatar = models.FileField(upload_to=avatar_path, blank=True, null=True)
 
+    def get_username(self):
+        return self.username
+
     def email_page(self):
         from django.core.mail import EmailMessage
         email = EmailMessage(
