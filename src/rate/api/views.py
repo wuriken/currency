@@ -6,6 +6,8 @@ from rest_framework import generics
 
 
 class RateListCreateView(generics.ListCreateAPIView):
+    permission_classes = []
+    authentication_classes = []
     queryset = Rate.objects.all()
     serializer_class = RateSerializer
 

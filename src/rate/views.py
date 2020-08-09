@@ -18,7 +18,9 @@ from rate.utils import display
 
 class RateList(ListView):
     queryset = Rate.objects.all()
-    template_name = 'rate-list.html'
+    # template_name = 'rate/rate_list.html'
+    paginate_by = 10
+    ordering = ['id']
 
     def get_source_display(self, source):
         return SOURCE_CHOICES[source]

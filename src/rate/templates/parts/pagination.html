@@ -1,0 +1,88 @@
+{% load i18n %}
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+
+        {% if page.has_previous %}
+            <li class="page-item">
+                <a href="?page={{ page.previous_page_number }}{{ GET_string }}" class="page-link"
+                   title="{% trans "More recent entries" %}">Previous</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a href="#" class="page-link"
+                   title="{% trans "More recent entries" %}">Previous</a>
+            </li>
+        {% endif %}
+
+        {% for page_number in begin %}
+            <li class="page-item">
+                {% ifequal page.number page_number %}
+                    <li class="page-item active" aria-current="page">
+                          <span class="page-link">
+                            {{ page_number }}
+                            <span class="sr-only">(current)</span>
+                          </span>
+                    </li>
+                {% else %}
+                    <a href="?page={{ page_number }}{{ GET_string }}" class="page-link"
+                       title="{% trans "Entries page" %} {{ page_number }}">{{ page_number }}</a>
+                {% endifequal %}
+            </li>
+        {% endfor %}
+
+        {% if middle %}
+            <li class="page-item">&hellip;</li>
+            {% for page_number in middle %}
+                <li class="page-item">
+                    {% ifequal page.number page_number %}
+                        <li class="page-item active" aria-current="page">
+                          <span class="page-link">
+                            {{ page_number }}
+                            <span class="sr-only">(current)</span>
+                          </span>
+                        </li>
+                    {% else %}
+                        <a href="?page={{ page_number }}{{ GET_string }}" class="page-link"
+                           title="{% trans "Entries page" %} {{ page_number }}">{{ page_number }}</a>
+                    {% endifequal %}
+                </li>
+            {% endfor %}
+        {% endif %}
+
+        {% if end %}
+            <li class="page-item">&hellip;</li>
+            {% for page_number in end %}
+                <li class="page-item">
+                    {% ifequal page.number page_number %}
+                        <li class="page-item active" aria-current="page">
+                          <span class="page-link">
+                            {{ page_number }}
+                            <span class="sr-only">(current)</span>
+                          </span>
+                        </li>
+                    {% else %}
+                        <a href="?page={{ page_number }}{{ GET_string }}" class="page-link"
+                           title="{% trans "Entries page" %} {{ page_number }}">{{ page_number }}</a>
+                    {% endifequal %}
+                </li>
+            {% endfor %}
+        {% endif %}
+        {% if page.has_next %}
+            <li class="page-item">
+                <a href="?page={{ page.next_page_number }}{{ GET_string }}" class="page-link"
+                   title="{% trans "More old entries" %}">Next</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a href="#" class="page-link"
+                   title="{% trans "More old entries" %}">Next</a>
+            </li>
+        {% endif %}
+
+        <form class="form-inline my-2 my-lg-0" action="?page=">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+        </form>
+
+    </ul>
+</nav>
