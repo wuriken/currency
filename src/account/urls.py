@@ -1,8 +1,7 @@
 from account import views
 from account.views import PasswordChange, PasswordChangeDone
 
-from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetDoneView, \
-    PasswordResetConfirmView, PasswordResetCompleteView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path, re_path
 
 app_name = 'account'
