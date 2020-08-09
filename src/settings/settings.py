@@ -8,11 +8,15 @@ from django.urls import reverse_lazy
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-SECRET_KEY = os.environ['SECRET_KEY']
-
-DEBUG = os.environ['SERVER'] == 'dev'
-ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split(':')
-
+# SECRET_KEY = os.environ['SECRET_KEY']
+#
+# DEBUG = os.environ['SERVER'] == 'dev'
+# ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split(':')
+# application
+SECRET_KEY = '7zbn5g%8%4)72%b6i(=$2gj9n3=hk7r%y36@i^8rgdgrdrg3454564grf'
+# dev staging production
+DEBUG = True
+ALLOWED_HOSTS = '*'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -81,12 +85,12 @@ DATABASES = {
     }
 }
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': f'{os.environ["MEMCACHED_HOST"]}:11211',
-    }
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+#         'LOCATION': f'{os.environ["MEMCACHED_HOST"]}:11211',
+#     }
+# }
 
 AUTH_USER_MODEL = 'account.User'
 
@@ -178,9 +182,9 @@ SIMPLE_JWT = {
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ['EMAIL_HOST']
-EMAIL_USE_TLS = os.environ['EMAIL_USE_TLS']
-EMAIL_PORT = os.environ['EMAIL_PORT']
-EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
-DEFAULT_EMAIL_FROM = os.environ['DEFAULT_EMAIL_FROM']
+# EMAIL_HOST = os.environ['EMAIL_HOST']
+# EMAIL_USE_TLS = os.environ['EMAIL_USE_TLS']
+# EMAIL_PORT = os.environ['EMAIL_PORT']
+# EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+# EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+# DEFAULT_EMAIL_FROM = os.environ['DEFAULT_EMAIL_FROM']

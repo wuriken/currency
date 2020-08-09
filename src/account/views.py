@@ -37,6 +37,10 @@ class MyProfile(LoginRequiredMixin, UpdateView):
     fields = ('email', 'first_name', 'last_name', 'avatar')
     success_url = reverse_lazy('index')
 
+    def post(self, request, *args, **kwargs):
+        breakpoint()
+        return super(MyProfile, self).post(request, *args, **kwargs)
+
     def get_object(self, queryset=None):
         obj = self.get_queryset().get(id=self.request.user.id)
         return obj
