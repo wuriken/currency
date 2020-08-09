@@ -6,21 +6,24 @@ from django.urls import reverse_lazy
 from django.views.generic import DeleteView, TemplateView
 from django.views.generic import ListView, View
 from django.views.generic import UpdateView
+from django_filters.views import FilterView
 
 from openpyxl import Workbook
 from openpyxl.writer.excel import save_virtual_workbook
 
 from rate import model_choices as mch
+from rate.filters import RateFilter
 from rate.model_choices import CURRENCY_TYPE_CHOICES, RATE_TYPE_CHOICES, SOURCE_CHOICES
 from rate.models import Rate
 from rate.utils import display
 
 
-class RateList(ListView):
+class RateList(FilterView):
     queryset = Rate.objects.all()
-    # template_name = 'rate/rate_list.html'
+    template_name = 'rate/rate_list.html'
     paginate_by = 10
     ordering = ['id']
+    filterset_class = RateFilter
 
     def get_source_display(self, source):
         return SOURCE_CHOICES[source]

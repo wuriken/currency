@@ -6,6 +6,13 @@
 
 {% block content %}
 
+    <form method="get">
+        {{ filter.form.as_p }}
+        <button type="submit" class="btn btn-primary">
+            <span class="glyphicon glyphicon-search"></span> Search
+        </button>
+    </form>
+
     <a href="{% url 'rate:download-csv' %}"> Donwload rates csv</a> <br>
     <a href="{% url 'rate:download-xlsx' %}"> Donwload rates xlsx</a>
     <table class="table table-striped">
