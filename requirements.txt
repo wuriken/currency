@@ -20,7 +20,7 @@ ipython==7.14.0
 ipython-genutils==0.2.0
 jedi==0.17.0
 kombu==4.6.8
-lxml==4.5.1
+lxml==4.6.5
 mccabe==0.6.1
 parso==0.7.0
 pexpect==4.8.0
